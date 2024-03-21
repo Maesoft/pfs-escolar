@@ -7,28 +7,28 @@ import { UpdateCiudadDto } from './dto/update-ciudad.dto';
 export class CiudadController {
   constructor(private readonly ciudadService: CiudadService) {}
 
-  @Post()
-  create(@Body() createCiudadDto: CreateCiudadDto) {
-    return this.ciudadService.create(createCiudadDto);
-  }
+//   @Post()
+//   create(@Body() createCiudadDto: CreateCiudadDto) {
+//     return this.ciudadService.create(createCiudadDto);
+//   }
 
   @Get()
   findAll() {
-    return this.ciudadService.findAll();
+    return this.ciudadService.getAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ciudadService.findOne(+id);
+    return this.ciudadService.getById(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCiudadDto: UpdateCiudadDto) {
-    return this.ciudadService.update(+id, updateCiudadDto);
-  }
+//   @Patch(':id')
+//   update(@Param('id') id: string, @Body() updateCiudadDto: UpdateCiudadDto) {
+//     return this.ciudadService.update(+id, updateCiudadDto);
+//   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ciudadService.remove(+id);
-  }
+//   @Delete(':id')
+//   remove(@Param('id') id: string) {
+//     return this.ciudadService.remove(+id);
+//   }
 }

@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CiudadModule } from './ciudad/ciudad.module';
+import { EstudiantesModule } from './estudiantes/estudiantes.module';
+import { EscuelasModule } from './escuelas/escuelas.module';
+import { ProfesoresModule } from './profesores/profesores.module';
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: "mysql",
@@ -9,10 +12,14 @@ import { CiudadModule } from './ciudad/ciudad.module';
     username: "root",
     password: "root",
     database: "escolar",
-    entities: [],
+    entities: ["dist/**/**.entity{.ts,.js}"],
     synchronize: true
 }),
- CiudadModule],
+ CiudadModule,
+ EstudiantesModule,
+ EscuelasModule,
+ ProfesoresModule
+ ],
 
 })
 

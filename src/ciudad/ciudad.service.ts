@@ -1,26 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCiudadDto } from './dto/create-ciudad.dto';
-import { UpdateCiudadDto } from './dto/update-ciudad.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Ciudad } from './entities/ciudad.entity';
+import { FindOneOptions, Repository } from 'typeorm';
 
 @Injectable()
-export class CiudadService {
-  create(createCiudadDto: CreateCiudadDto) {
-    return 'This action adds a new ciudad';
-  }
+export class CiudadService { 
+    constructor(@InjectRepository(Ciudad) 
+    private readonly ciudadRepository:Repository<Ciudad>){}
 
-  findAll() {
-    return `This action returns all ciudad`;
-  }
+    public async getAll():Promise<Ciudad[]>{
+        return await this.ciudadRepository.find()
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ciudad`;
-  }
+    public async getById(id : number) : Promise<Ciudad> {
+      const criterio : FindOneOptions = { where: { idCiudad: id } }
+      let ciudad : Ciudad = await this.ciudadRepository.findOne( criterio );
+      if (!ciudad)throw new NotFoundException(`No se encontro la ciudad con el Id´${id}`) 
+      return ciudad;
+}
 
-  update(id: number, updateCiudadDto: UpdateCiudadDto) {
-    return `This action updates a #${id} ciudad`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} ciudad`;
-  }
 }
