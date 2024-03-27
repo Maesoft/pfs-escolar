@@ -1,13 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEscuelaDto } from './dto/create-escuela.dto';
 import { UpdateEscuelaDto } from './dto/update-escuela.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Escuela } from './entities/escuela.entity';
-import { Repository, FindOneOptions } from 'typeorm';
+import { Repository, FindOneOptions, DeleteResult } from 'typeorm';
+
+const msgNotFound:string = `No se encontro ningun registro con el Id. ingresado.`
+
 
 @Injectable()
 export class EscuelasService {
-  constructor(@InjectRepository(Escuela) 
+
+    constructor(@InjectRepository(Escuela) 
     private readonly escuelaRepository:Repository<Escuela>){}
 
     public async findAll():Promise<Escuela[]>{
@@ -17,20 +21,38 @@ export class EscuelasService {
     public async findOne(id: number):Promise<Escuela> {
       const criterio:FindOneOptions={where : {idEscuela: id}}
       const res = await this.escuelaRepository.findOne(criterio)
-      if(!res)throw new NotFoundException(`No se encontro ninguna escuela con el Id ${id}.`) 
+      if(!res)throw new NotFoundException(msgNotFound + id) 
       return res;  
     }
 
-  // create(createEscuelaDto: CreateEscuelaDto) {
-  //   return 'This action adds a new escuela';
-  // }
+   public async create(escuelaDto: CreateEscuelaDto):Promise<Escuela>{
+    try{
+      const escuela:Escuela = await this.escuelaRepository.save(new Escuela(escuelaDto.nombre,escuelaDto.direccion))
+      if(!escuela){
+        throw new Error('Ocurrio un error al crear el registro.')
+      }else{
+        return escuela
+      }
+    }catch(error){
+      throw new HttpException({
+      status:HttpStatus.INTERNAL_SERVER_ERROR, error: `Error inesperado al crear el registro: ${error}`},
+      HttpStatus.INTERNAL_SERVER_ERROR)}
+    }
 
 
-  // update(id: number, updateEscuelaDto: UpdateEscuelaDto) {
-  //   return `This action updates a #${id} escuela`;
-  // }
+  public async update(id: number, updateEscuelaDto: UpdateEscuelaDto):Promise<Escuela> {
+    const criterio : FindOneOptions = {where: {idEscuela:id}}
+    let escuela:Escuela = await this.escuelaRepository.findOne(criterio)
+    if (!escuela)throw new NotFoundException(msgNotFound + id)
+    escuela.setNombre(updateEscuelaDto.nombre);
+    escuela.setDireccion(updateEscuelaDto.direccion);
+    return await this.escuelaRepository.save(escuela)
+  }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} escuela`;
-  // }
+  public async remove(id:number):Promise<DeleteResult>{
+    const criterio : FindOneOptions = { where: {idEscuela:id}};
+    let escuela : Escuela = await this.escuelaRepository.findOne(criterio);
+    if(!escuela)throw new NotFoundException(msgNotFound + id)
+    return await this.escuelaRepository.delete(escuela.getId())
+}
 }
