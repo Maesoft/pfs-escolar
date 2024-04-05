@@ -6,11 +6,11 @@ import { UpdateCiudadDto } from './dto/update-ciudad.dto';
 
 @Controller('ciudad')
 export class CiudadController {
-  constructor(private readonly ciudadService: CiudadService) {}
+  constructor(private readonly ciudadService: CiudadService) { }
 
   @Post()
-   create(@Body() ciudad: CreateCiudadDto){
-    return  this.ciudadService.create(ciudad);
+  create(@Body() ciudad: CreateCiudadDto) {
+    return this.ciudadService.create(ciudad);
   }
 
   @Get()

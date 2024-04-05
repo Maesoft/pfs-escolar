@@ -41,6 +41,7 @@ export class EstudiantesService {
         HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+  
   public async update(id: number, updatestudianteDto: UpdateEstudianteDto): Promise<Estudiante> {
     const criterio: FindOneOptions = { where: { idEstudiante: id } }
     let estudiante: Estudiante = await this.estudianteRepository.findOne(criterio)
