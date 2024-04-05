@@ -7,28 +7,37 @@ export class Estudiante {
     @Column()
     private nombre:string;
     @Column()
-    private domicilio:string;
+    private apellido:string;
+    @Column()
+    private fecha_nacimiento:string;
     // @Column()
     // private fk_id_ciudad:number;
 
-    constructor(nombre:string, domicilo:string){
+    constructor(nombre:string, apellido:string, fecha_nacimiento:string){
         this.nombre=nombre;
-        this.domicilio=domicilo;
+        this.apellido=apellido;
+        this.fecha_nacimiento=fecha_nacimiento;
     }
     public getId():number{
-        return this.idEstudiante
+        return this.idEstudiante;
     }
-    public getNombre():string{
-        return this.nombre
-    }
-    public getAdress():string{
-        return this.domicilio
-    }
-    public setName(nombre:string):void{
+    public setNombre(nombre:string):void{
         this.nombre=nombre;
     }
-    public setAdress(domicilio:string):void{
-        this.domicilio=domicilio;
+    public getNombre():string{
+        return this.nombre;
+    }
+    public setApellido(apellido:string):void{
+        this.apellido=apellido;
+    }
+    public getApellido():string{
+        return this.apellido;
+    }
+    public getFechaNacimiento():string{
+        return this.fecha_nacimiento;
+    }
+    public setFechaNacimiento(fecha_nacimiento:string):void{
+        this.fecha_nacimiento=fecha_nacimiento;
     }
 
 

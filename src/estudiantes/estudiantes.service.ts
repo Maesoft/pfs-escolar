@@ -5,54 +5,56 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Estudiante } from './entities/estudiante.entity';
 import { Repository, FindOneOptions, DeleteResult } from 'typeorm';
 
-const msgNotFound:string = `No se encontro ningun registro con el Id. ingresado.`
+const msgNotFound: string = `No se encontro ningun registro con el Id. ingresado.`
 
 
 @Injectable()
 export class EstudiantesService {
 
-    constructor(@InjectRepository(Estudiante) 
-    private readonly estudianteRepository:Repository<Estudiante>){}
+  constructor(@InjectRepository(Estudiante)
+  private readonly estudianteRepository: Repository<Estudiante>) { }
 
-    public async findAll():Promise<Estudiante[]>{
-      return await this.estudianteRepository.find();
-    }
-  
-    public async findOne(id: number):Promise<Estudiante> {
-      const criterio:FindOneOptions={where : {idEstudiante: id}}
-      const res = await this.estudianteRepository.findOne(criterio)
-      if(!res)throw new NotFoundException(msgNotFound) 
-      return res;  
-    }
+  public async findAll(): Promise<Estudiante[]> {
+    return await this.estudianteRepository.find();
+  }
 
-   public async create(estudianteDto: CreateEstudianteDto):Promise<Estudiante>{
-    try{
-      const estudiante:Estudiante = await this.estudianteRepository.save(new Estudiante(estudianteDto.fecha_nacimiento, estudianteDto.nombre));
+  public async findOne(id: number): Promise<Estudiante> {
+    const criterio: FindOneOptions = { where: { idEstudiante: id } }
+    const res = await this.estudianteRepository.findOne(criterio)
+    if (!res) throw new NotFoundException(msgNotFound)
+    return res;
+  }
 
-      if(!estudiante){
+  public async create(estudianteDto: CreateEstudianteDto): Promise<Estudiante> {
+    try {
+      const estudiante: Estudiante = await this.estudianteRepository.save(new Estudiante(estudianteDto.nombre, estudianteDto.apellido, estudianteDto.fecha_nacimiento));
+
+      if (!estudiante) {
         throw new Error('Ocurrio un error al crear el registro.')
-      }else{
+      } else {
         return estudiante
       }
-    }catch(error){
+    } catch (error) {
       throw new HttpException({
-      status:HttpStatus.INTERNAL_SERVER_ERROR, error: `Error inesperado al crear el registro: ${error}`},
-      HttpStatus.INTERNAL_SERVER_ERROR)}
+        status: HttpStatus.INTERNAL_SERVER_ERROR, error: `Error inesperado al crear el registro: ${error}`
+      },
+        HttpStatus.INTERNAL_SERVER_ERROR)
     }
-
-
-  public async update(id: number, updateestudianteDto: UpdateEstudianteDto):Promise<Estudiante> {
-    const criterio : FindOneOptions = {where: {idEstudiante:id}}
-    let estudiante:Estudiante = await this.estudianteRepository.findOne(criterio)
-    if (!estudiante)throw new NotFoundException(msgNotFound)
-    
+  }
+  public async update(id: number, updatestudianteDto: UpdateEstudianteDto): Promise<Estudiante> {
+    const criterio: FindOneOptions = { where: { idEstudiante: id } }
+    let estudiante: Estudiante = await this.estudianteRepository.findOne(criterio)
+    if (!estudiante) throw new NotFoundException(msgNotFound)
+    estudiante.setNombre(updatestudianteDto.nombre)
+    estudiante.setApellido(updatestudianteDto.apellido)
+    estudiante.setFechaNacimiento(updatestudianteDto.fecha_nacimiento)
     return await this.estudianteRepository.save(estudiante)
   }
 
-  public async remove(id:number):Promise<DeleteResult>{
-    const criterio : FindOneOptions = { where: {idEstudiante:id}};
-    let estudiante : Estudiante = await this.estudianteRepository.findOne(criterio);
-    if(!estudiante)throw new NotFoundException(msgNotFound)
+  public async remove(id: number): Promise<DeleteResult> {
+    const criterio: FindOneOptions = { where: { idEstudiante: id } };
+    let estudiante: Estudiante = await this.estudianteRepository.findOne(criterio);
+    if (!estudiante) throw new NotFoundException(msgNotFound)
     return await this.estudianteRepository.delete(estudiante.getId())
-}
+  }
 }

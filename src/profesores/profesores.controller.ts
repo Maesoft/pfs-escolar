@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { ProfesoresService } from './profesores.service';
 import { CreateProfesoreDto } from './dto/create-profesore.dto';
 import { UpdateProfesoreDto } from './dto/update-profesore.dto';
@@ -17,18 +17,18 @@ export class ProfesoresController {
     return this.profesoresService.findOne(+id);
   }
 
-  // @Post()
-  // create(@Body() createProfesoreDto: CreateProfesoreDto) {
-  //   return this.profesoresService.create(createProfesoreDto);
-  // }
+  @Post()
+  create(@Body() createProfesoreDto: CreateProfesoreDto) {
+    return this.profesoresService.create(createProfesoreDto);
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateProfesoreDto: UpdateProfesoreDto) {
-  //   return this.profesoresService.update(+id, updateProfesoreDto);
-  // }
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateProfesoreDto: UpdateProfesoreDto) {
+    return this.profesoresService.update(+id, updateProfesoreDto);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.profesoresService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.profesoresService.remove(+id);
+  }
 }
