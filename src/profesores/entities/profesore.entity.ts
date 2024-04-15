@@ -1,13 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Clase } from "src/clases/entities/clase.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('profesores')
 export class Profesor {
     @PrimaryGeneratedColumn()
-    private idProfesor:number;
+    private id:number;
     @Column()
     private nombre:string;
     @Column()
     private apellido:string;
+    @OneToMany(()=>Clase, clase => clase.profesor)
+    clase:Clase[]
 
     constructor(nombre:string,apellido:string){
         this.nombre=nombre;
@@ -21,7 +24,7 @@ export class Profesor {
         this.apellido=apellido;
     }
     public getId():number{
-        return this.idProfesor;
+        return this.id;
     }
     public getNombre():string{
         return this.nombre;

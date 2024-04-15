@@ -1,5 +1,14 @@
+import { IsString, IsNotEmpty } from "class-validator";
+
+
 export class CreateEstudianteDto {
-    readonly nombre:string;
-    readonly apellido:string;
-    readonly fecha_nacimiento:string;
+    @IsString()
+    @IsNotEmpty()
+    readonly nombre: string;
+    @IsString()
+    @IsNotEmpty()
+    readonly apellido: string;
+    @IsString()
+    @IsNotEmpty()
+    readonly fecha_nacimiento: string;
 }

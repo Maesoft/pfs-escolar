@@ -15,11 +15,11 @@ export class EstudiantesService {
   private readonly estudianteRepository: Repository<Estudiante>) { }
 
   public async findAll(): Promise<Estudiante[]> {
-    return await this.estudianteRepository.find();
+    return await this.estudianteRepository.find({relations:['clases']});
   }
 
   public async findOne(id: number): Promise<Estudiante> {
-    const criterio: FindOneOptions = { where: { idEstudiante: id } }
+    const criterio: FindOneOptions = {relations:['clases'], where: { idEstudiante: id } }
     const res = await this.estudianteRepository.findOne(criterio)
     if (!res) throw new NotFoundException(msgNotFound)
     return res;

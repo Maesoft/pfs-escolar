@@ -1,19 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Escuela } from "src/escuelas/entities/escuela.entity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 @Entity('ciudades')
 export class Ciudad {
     @PrimaryGeneratedColumn()
-    private idCiudad:number;
+    private id:number;
     @Column()
     private nombre:string;
+
+    @OneToMany(()=> Escuela, escuela => escuela.ciudad)
+    escuela:Escuela[]
 
     constructor(nombre:string){
         this.nombre=nombre;
     }
 
     public getIdCiudad():number{
-        return this.idCiudad;
+        return this.id;
     }
-  
+
     public getNombre():string{
         return this.nombre;
     }

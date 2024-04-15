@@ -3,23 +3,21 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity('estudiantes')
 export class Estudiante {
     @PrimaryGeneratedColumn()
-    private idEstudiante:number;
+    private id:number;
     @Column()
     private nombre:string;
     @Column()
     private apellido:string;
     @Column()
     private fecha_nacimiento:string;
-    // @Column()
-    // private fk_id_ciudad:number;
-
+     
     constructor(nombre:string, apellido:string, fecha_nacimiento:string){
         this.nombre=nombre;
         this.apellido=apellido;
         this.fecha_nacimiento=fecha_nacimiento;
     }
     public getId():number{
-        return this.idEstudiante;
+        return this.id;
     }
     public setNombre(nombre:string):void{
         this.nombre=nombre;

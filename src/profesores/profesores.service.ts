@@ -24,14 +24,13 @@ export class ProfesoresService {
   }
 
   public async create(createProfesoreDto: CreateProfesoreDto): Promise<Profesor> {
+    
     try {
       const profesor: Profesor = await this.repositoryProfesor.save(new Profesor(createProfesoreDto.nombre, createProfesoreDto.apellido));
-      if (!profesor) {
-        throw new Error('Ocurrio un error al crear el registro.')
-      } else {
-        return profesor
-      }
-    } catch (error) {
+      if (!profesor) throw new Error('Ocurrio un error al crear el registro.');
+      return profesor    
+    } 
+    catch (error) {
       throw new HttpException({
         status: HttpStatus.INTERNAL_SERVER_ERROR, error: `Error inesperado al crear el registro: ${error}`
       },
@@ -46,7 +45,6 @@ export class ProfesoresService {
     profesor.setNombre(updateProfesoreDto.nombre)
     profesor.setApellido(updateProfesoreDto.apellido)
     return await this.repositoryProfesor.save(profesor)
-
   }
 
   public async remove(id: number) {

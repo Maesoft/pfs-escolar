@@ -7,8 +7,7 @@ import { UpdateCiudadDto } from './dto/update-ciudad.dto';
 
 @Injectable()
 export class CiudadService {
-    constructor(@InjectRepository(Ciudad)
-    private readonly ciudadRepository: Repository<Ciudad>) { }
+    constructor(@InjectRepository(Ciudad) private readonly ciudadRepository: Repository<Ciudad>) { }
 
     public async create(ciudadDto: CreateCiudadDto): Promise<Ciudad> {
         try {
