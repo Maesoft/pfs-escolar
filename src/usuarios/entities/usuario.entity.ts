@@ -4,15 +4,15 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class Usuario {
 
     @PrimaryGeneratedColumn()
-    private id: number
+    id: number
     @Column({unique:true})
-    private name: string
+    name: string
     @Column()
-    private password: string
+    password: string
     @Column()
-    private email: string
+    email: string
     @Column({ default: "user" })
-    private rol: string
+    rol: string
 
     constructor(name: string, password: string, email: string, rol: string) {
         this.name = name;
@@ -20,6 +20,5 @@ export class Usuario {
         this.email = email;
         this.rol = rol;
     }
-
 
 }

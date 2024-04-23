@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body,  Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body,  Param, Delete, Put, UseGuards } from '@nestjs/common';
 import { ProfesoresService } from './profesores.service';
 import { CreateProfesoreDto } from './dto/create-profesore.dto';
 import { UpdateProfesoreDto } from './dto/update-profesore.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('profesores')
 export class ProfesoresController {
@@ -18,6 +19,7 @@ export class ProfesoresController {
   }
 
   @Post()
+  @UseGuards(AuthGuard)
   create(@Body() createProfesoreDto: CreateProfesoreDto) {
     return this.profesoresService.create(createProfesoreDto);
   }
